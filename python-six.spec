@@ -17,13 +17,13 @@ URL:		http://pythonhosted.org/six/
 %if %{with python2}
 BuildRequires:	python >= 1:2.4
 BuildRequires:	python-modules
-BuildRequires:	rpmbuild(macros) >= 1.219
 %endif
 %if %{with python3}
 BuildRequires:	python3
 BuildRequires:	python3-modules
 %endif
 BuildRequires:	rpm-pythonprov
+BuildRequires:	rpmbuild(macros) >= 1.612
 Requires:	python-modules
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
