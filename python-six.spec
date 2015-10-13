@@ -7,20 +7,21 @@
 Summary:	Six - Python 2 and 3 Compatibility Library (Python 2 module)
 Summary(pl.UTF-8):	Biblioteka kompatybilności między Pythonem 2 i 3 (moduł Pythona 2)
 Name:		python-%{module}
-Version:	1.9.0
-Release:	2
+Version:	1.10.0
+Release:	1
 License:	MIT
 Group:		Libraries/Python
+#Source0Download: https://pypi.python.org/pypi/six/
 Source0:	https://pypi.python.org/packages/source/s/six/six-%{version}.tar.gz
-# Source0-md5:	476881ef4012262dfc8adc645ee786c4
+# Source0-md5:	34eed507548117b2ab523ab14b2f8b55
 URL:		http://pythonhosted.org/six/
 %if %{with python2}
 BuildRequires:	python >= 1:2.4
-BuildRequires:	python-modules
+BuildRequires:	python-modules >= 1:2.4
 %endif
 %if %{with python3}
-BuildRequires:	python3
-BuildRequires:	python3-modules
+BuildRequires:	python3 >= 1:3.2
+BuildRequires:	python3-modules >= 1:3.2
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.612
