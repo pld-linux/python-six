@@ -8,7 +8,7 @@ Summary:	Six - Python 2 and 3 Compatibility Library (Python 2 module)
 Summary(pl.UTF-8):	Biblioteka kompatybilności między Pythonem 2 i 3 (moduł Pythona 2)
 Name:		python-%{module}
 Version:	1.10.0
-Release:	3
+Release:	4
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.python.org/pypi/six/
