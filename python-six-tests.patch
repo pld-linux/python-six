@@ -1,0 +1,22 @@
+HTMLParser is imported by some pytest extension.
+
+--- six-1.11.0/test_six.py.orig	2017-09-17 20:46:32.000000000 +0200
++++ six-1.11.0/test_six.py	2018-07-15 09:35:02.566564199 +0200
+@@ -87,13 +87,13 @@
+ 
+ def test_lazy():
+     if six.PY3:
+-        html_name = "html.parser"
++        html_name = "http.cookiejar"
+     else:
+-        html_name = "HTMLParser"
++        html_name = "cookielib"
+     assert html_name not in sys.modules
+-    mod = six.moves.html_parser
++    mod = six.moves.http_cookiejar
+     assert sys.modules[html_name] is mod
+-    assert "htmlparser" not in six._MovedItems.__dict__
++    assert "httpcookiejar" not in six._MovedItems.__dict__
+ 
+ 
+ try:

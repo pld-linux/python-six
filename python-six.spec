@@ -2,29 +2,45 @@
 # Conditional build:
 %bcond_without  python2 # CPython 2.x module
 %bcond_without  python3 # CPython 3.x module
+%bcond_without	tests	# unit tests
+%bcond_without	doc	# Sphinx documentation
 
 %define 	module	six
 Summary:	Six - Python 2 and 3 Compatibility Library (Python 2 module)
 Summary(pl.UTF-8):	Biblioteka kompatybilności między Pythonem 2 i 3 (moduł Pythona 2)
 Name:		python-%{module}
-Version:	1.10.0
-Release:	4
+Version:	1.11.0
+Release:	1
 License:	MIT
 Group:		Libraries/Python
-#Source0Download: https://pypi.python.org/pypi/six/
-Source0:	https://pypi.python.org/packages/source/s/six/six-%{version}.tar.gz
-# Source0-md5:	34eed507548117b2ab523ab14b2f8b55
+#Source0Download: https://pypi.org/simple/six/
+Source0:	https://files.pythonhosted.org/packages/source/s/six/six-%{version}.tar.gz
+# Source0-md5:	d12789f9baf7e9fb2524c0c64f1773f8
+Patch0:		%{name}-tests.patch
 URL:		http://pythonhosted.org/six/
 %if %{with python2}
 BuildRequires:	python >= 1:2.4
 BuildRequires:	python-modules >= 1:2.4
+BuildRequires:	python-setuptools
+%if %{with tests}
+BuildRequires:	python-py
+BuildRequires:	python-pytest
+%endif
 %endif
 %if %{with python3}
 BuildRequires:	python3 >= 1:3.2
 BuildRequires:	python3-modules >= 1:3.2
+BuildRequires:	python3-setuptools
+%if %{with tests}
+BuildRequires:	python3-py
+BuildRequires:	python3-pytest
+%endif
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.710
+%if %{with doc}
+BuildRequires:	sphinx-pdg
+%endif
 Requires:	python-modules
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -67,15 +83,42 @@ pythonowego, więc można go bezproblemowo skopiować do projektu.
 
 Ten pakiet zawiera moduł Pythona 3.
 
+%package apidocs
+Summary:	Documentation for Python six module
+Summary(pl.UTF-8):	Dokumentacja modułu Pythona six
+Group:		Documentation
+
+%description apidocs
+Documentation for Python six module.
+
+%description apidocs -l pl.UTF-8
+Dokumentacja modułu Pythona six.
+
 %prep
 %setup -q -n %{module}-%{version}
+%patch0 -p1
 
 %build
 %if %{with python2}
 %py_build
+
+%if %{with tests}
+PYTHONPATH=$(pwd) \
+%{__python} -m pytest test_six.py
 %endif
+%endif
+
 %if %{with python3}
 %py3_build
+
+%if %{with tests}
+PYTHONPATH=$(pwd) \
+%{__python3} -m pytest test_six.py
+%endif
+%endif
+
+%if %{with doc}
+%{__make} -C documentation html
 %endif
 
 %install
@@ -84,8 +127,6 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %py_install
 
-%py_ocomp $RPM_BUILD_ROOT%{py_sitescriptdir}
-%py_comp $RPM_BUILD_ROOT%{py_sitescriptdir}
 %py_postclean
 %endif
 
@@ -99,7 +140,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %files
 %defattr(644,root,root,755)
-%doc CHANGES README documentation/*.rst
+%doc CHANGES LICENSE README.rst
 %{py_sitescriptdir}/six.py[co]
 %if "%{py_ver}" > "2.4"
 %{py_sitescriptdir}/six-%{version}-py*.egg-info
@@ -109,8 +150,14 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %files -n python3-%{module}
 %defattr(644,root,root,755)
-%doc CHANGES README documentation/*.rst
+%doc CHANGES LICENSE README.rst
 %{py3_sitescriptdir}/six.py
 %{py3_sitescriptdir}/__pycache__/six.*.py[co]
 %{py3_sitescriptdir}/six-%{version}-py*.egg-info
+%endif
+
+%if %{with doc}
+%files apidocs
+%defattr(644,root,root,755)
+%doc documentation/_build/html/{_static,*.html,*.js}
 %endif
