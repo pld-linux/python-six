@@ -4,6 +4,7 @@
 %bcond_without  python3 # CPython 3.x module
 %bcond_without	tests	# unit tests
 %bcond_without	doc	# Sphinx documentation
+%bcond_without  setuptools # build without setuptools (for bootstraping)
 
 %define 	module	six
 Summary:	Six - Python 2 and 3 Compatibility Library (Python 2 module)
@@ -21,7 +22,7 @@ URL:		http://pythonhosted.org/six/
 %if %{with python2}
 BuildRequires:	python >= 1:2.4
 BuildRequires:	python-modules >= 1:2.4
-BuildRequires:	python-setuptools
+%{?with_setuptools:BuildRequires:      python-setuptools}
 %if %{with tests}
 BuildRequires:	python-py
 BuildRequires:	python-pytest
@@ -30,7 +31,7 @@ BuildRequires:	python-pytest
 %if %{with python3}
 BuildRequires:	python3 >= 1:3.2
 BuildRequires:	python3-modules >= 1:3.2
-BuildRequires:	python3-setuptools
+%{?with_setuptools:BuildRequires:      python3-setuptools}
 %if %{with tests}
 BuildRequires:	python3-py
 BuildRequires:	python3-pytest
