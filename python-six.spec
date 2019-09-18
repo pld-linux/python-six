@@ -1,28 +1,28 @@
 #
 # Conditional build:
-%bcond_without  python2 # CPython 2.x module
-%bcond_without  python3 # CPython 3.x module
-%bcond_without	tests	# unit tests
-%bcond_without	doc	# Sphinx documentation
-%bcond_without  setuptools # build without setuptools (for bootstraping)
+%bcond_without	python2		# CPython 2.x module
+%bcond_without	python3		# CPython 3.x module
+%bcond_without	tests		# unit tests
+%bcond_without	doc		# Sphinx documentation
+%bcond_without	setuptools	# build without setuptools (for bootstraping)
 
 %define 	module	six
 Summary:	Six - Python 2 and 3 Compatibility Library (Python 2 module)
 Summary(pl.UTF-8):	Biblioteka kompatybilności między Pythonem 2 i 3 (moduł Pythona 2)
 Name:		python-%{module}
-Version:	1.11.0
+Version:	1.12.0
 Release:	1
 License:	MIT
 Group:		Libraries/Python
 #Source0Download: https://pypi.org/simple/six/
 Source0:	https://files.pythonhosted.org/packages/source/s/six/six-%{version}.tar.gz
-# Source0-md5:	d12789f9baf7e9fb2524c0c64f1773f8
+# Source0-md5:	9ae5d1feed8c0215f4ae4adcd9207fcb
 Patch0:		%{name}-tests.patch
-URL:		http://pythonhosted.org/six/
+URL:		https://pypi.org/project/six/
 %if %{with python2}
-BuildRequires:	python >= 1:2.4
-BuildRequires:	python-modules >= 1:2.4
-%{?with_setuptools:BuildRequires:      python-setuptools}
+BuildRequires:	python >= 1:2.6
+BuildRequires:	python-modules >= 1:2.6
+%{?with_setuptools:BuildRequires:	python-setuptools}
 %if %{with tests}
 BuildRequires:	python-py
 BuildRequires:	python-pytest
@@ -31,18 +31,18 @@ BuildRequires:	python-pytest
 %if %{with python3}
 BuildRequires:	python3 >= 1:3.2
 BuildRequires:	python3-modules >= 1:3.2
-%{?with_setuptools:BuildRequires:      python3-setuptools}
+%{?with_setuptools:BuildRequires:	python3-setuptools}
 %if %{with tests}
 BuildRequires:	python3-py
 BuildRequires:	python3-pytest
 %endif
 %endif
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.710
+BuildRequires:	rpmbuild(macros) >= 1.714
 %if %{with doc}
-BuildRequires:	sphinx-pdg
+BuildRequires:	sphinx-pdg >= 1.0
 %endif
-Requires:	python-modules
+Requires:	python-modules >= 1:2.6
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -66,7 +66,7 @@ Ten pakiet zawiera moduł Pythona 2.
 Summary:	Six - Python 2 and 3 Compatibility Library (Python 3 module)
 Summary(pl.UTF-8):	Biblioteka kompatybilności między Pythonem 2 i 3 (moduł Pythona 3)
 Group:		Libraries/Python
-Requires:	python3-modules
+Requires:	python3-modules >= 1:3.2
 
 %description -n python3-%{module}
 Six provides simple utilities for wrapping over differences between
@@ -143,9 +143,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc CHANGES LICENSE README.rst
 %{py_sitescriptdir}/six.py[co]
-%if "%{py_ver}" > "2.4"
 %{py_sitescriptdir}/six-%{version}-py*.egg-info
-%endif
 %endif
 
 %if %{with python3}
