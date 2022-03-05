@@ -102,6 +102,7 @@ Dokumentacja modułu Pythona six.
 %py_build
 
 %if %{with tests}
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 PYTHONPATH=$(pwd) \
 %{__python} -m pytest test_six.py
 %endif
@@ -111,6 +112,7 @@ PYTHONPATH=$(pwd) \
 %py3_build
 
 %if %{with tests}
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
 PYTHONPATH=$(pwd) \
 %{__python3} -m pytest test_six.py
 %endif
